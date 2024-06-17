@@ -8,7 +8,7 @@
     <UseWPF>true</UseWPF>
     <SignAssembly>False</SignAssembly>
     <Title>Paper</Title>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Paper.dialogs;
 
 namespace Paper {
   /// <summary>
@@ -139,6 +140,17 @@ namespace Paper {
 
     private void MenuEdit_Paste_Click(object sender, RoutedEventArgs e) {
       PaperTextbox.Paste();
+    }
+
+    private void MenuEdit_Font_Click(object sender, RoutedEventArgs e) {
+      var FontSelectionDialog = new FontSelectionDialog();
+
+      if (FontSelectionDialog.ShowDialog() == true) {
+        var selectedFontFamily = FontSelectionDialog.SelectedFontFamily;
+        var selectedFontSize = FontSelectionDialog.SelectedFontSize;
+        PaperTextbox.FontFamily = selectedFontFamily;
+        PaperTextbox.FontSize = selectedFontSize;
+      }
     }
     #endregion
 
