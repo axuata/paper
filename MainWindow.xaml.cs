@@ -1,0 +1,101 @@
+﻿using Microsoft.Win32;
+using System.Text;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Paper {
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
+  public partial class MainWindow {
+    private string currentFilePath = string.Empty;
+    private bool isSaved = true;
+
+    public MainWindow() {
+      InitializeComponent();
+    }
+
+    private void PaperTextbox_TextChanged(object sender, TextChangedEventArgs e) {
+      isSaved = false;
+    }
+
+    #region Menu
+
+    #region Application
+    private void MenuApplication_AboutPaper_Click(object sender, RoutedEventArgs e) {
+      MessageBox.Show("Paper / 1.0.0 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private void MenuApplication_Exit_Click(object sender, RoutedEventArgs e) {
+      Application.Current.Shutdown();
+    }
+    #endregion
+
+    #region File
+    private void MenuFile_NewFile_Click(object sender, RoutedEventArgs e) {
+      if (!ConfirmSaveIfNeeded()) {
+        return;
+      }
+
+      PaperTextbox.Clear();
+      currentFilePath = string.Empty;
+      isSaved = true;
+    }
+
+    private void MenuFile_Open_Click(object sender, RoutedEventArgs e) {
+      if (!ConfirmSaveIfNeeded()) {
+        return;
+      }
+
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+      if (openFileDialog.ShowDialog() == true) {
+        currentFilePath = openFileDialog.FileName;
+        PaperTextbox.Text = File.ReadAllText(currentFilePath);
+        isSaved = true;
+      }
+    }
+
+    private void MenuFile_Save_Click(object sender, RoutedEventArgs e) {
+      if (string.IsNullOrEmpty(currentFilePath)) {
+        MenuFile_SaveAs_Click(sender, e);
+      } else {
+        File.WriteAllText(currentFilePath, PaperTextbox.Text);
+        isSaved = true; // 保存後にフラグを設定
+      }
+    }
+
+    private void MenuFile_SaveAs_Click(object sender, RoutedEventArgs e) {
+      SaveFileDialog saveFileDialog = new SaveFileDialog();
+      saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+      if (saveFileDialog.ShowDialog() == true) {
+        currentFilePath = saveFileDialog.FileName;
+        File.WriteAllText(currentFilePath, PaperTextbox.Text);
+        isSaved = true; // 保存後にフラグを設定
+      }
+    }
+
+    private bool ConfirmSaveIfNeeded() {
+      if (!isSaved) {
+        MessageBoxResult result = MessageBox.Show("現在の内容が保存されていません。保存しますか？", "警告", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+        if (result == MessageBoxResult.Yes) {
+          MenuFile_Save_Click(this, new RoutedEventArgs());
+        } else if (result == MessageBoxResult.Cancel) {
+          return false;
+        }
+      }
+      return true;
+    }
+    #endregion
+
+    #endregion
+  }
+}
