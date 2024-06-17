@@ -143,13 +143,15 @@ namespace Paper {
     }
 
     private void MenuEdit_Font_Click(object sender, RoutedEventArgs e) {
-      var FontSelectionDialog = new FontSelectionDialog();
+      var FontSelectionDialog = new FontSelectionDialog(PaperTextbox);
 
       if (FontSelectionDialog.ShowDialog() == true) {
         var selectedFontFamily = FontSelectionDialog.SelectedFontFamily;
         var selectedFontSize = FontSelectionDialog.SelectedFontSize;
+        var selectedFontWeight = FontSelectionDialog.SelectedFontWeight;
         PaperTextbox.FontFamily = selectedFontFamily;
         PaperTextbox.FontSize = selectedFontSize;
+        PaperTextbox.FontWeight = selectedFontWeight;
       }
     }
     #endregion
