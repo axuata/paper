@@ -16,15 +16,16 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="None"
         WindowCornerPreference="Round"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Closing="FluentWindow_Closing">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ui:TitleBar
                 x:Name="Paper"
@@ -56,7 +57,7 @@
                 </ui:MenuItem>
                 <Separator />
             </Menu>
-            <ui:TextBox TextWrapping="Wrap" Grid.Row="2" Grid.RowSpan="2" x:Name="PaperTextbox" TextChanged="PaperTextbox_TextChanged" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" FontSize="16"/>
+            <ui:TextBox TextWrapping="Wrap" Grid.Row="3" Grid.RowSpan="3" x:Name="PaperTextbox" TextChanged="PaperTextbox_TextChanged" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" AcceptsTab="True" FontSize="16"/>
         </Grid>
     </Grid>
 </ui:FluentWindow>

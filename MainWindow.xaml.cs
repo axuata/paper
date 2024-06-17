@@ -26,6 +26,13 @@ namespace Paper {
       InitializeComponent();
     }
 
+    private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+      if (!ConfirmSaveIfNeeded()) {
+        e.Cancel = true;
+        return;
+      }
+    }
+
     private void PaperTextbox_TextChanged(object sender, TextChangedEventArgs e) {
       isSaved = false;
       if (PaperTextbox.IsFocused) {
@@ -46,6 +53,10 @@ namespace Paper {
     }
 
     private void MenuApplication_Exit_Click(object sender, RoutedEventArgs e) {
+      if (!ConfirmSaveIfNeeded()) {
+        return;
+      }
+
       Application.Current.Shutdown();
     }
     #endregion
@@ -80,7 +91,7 @@ namespace Paper {
         MenuFile_SaveAs_Click(sender, e);
       } else {
         File.WriteAllText(currentFilePath, PaperTextbox.Text);
-        isSaved = true; // 保存後にフラグを設定
+        isSaved = true;
       }
     }
 
@@ -90,7 +101,7 @@ namespace Paper {
       if (saveFileDialog.ShowDialog() == true) {
         currentFilePath = saveFileDialog.FileName;
         File.WriteAllText(currentFilePath, PaperTextbox.Text);
-        isSaved = true; // 保存後にフラグを設定
+        isSaved = true;
       }
     }
 
