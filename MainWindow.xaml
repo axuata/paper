@@ -34,6 +34,7 @@
             <Menu FontSize="14" Grid.Row="1">
                 <ui:MenuItem Header="アプリケーション" Icon="{ui:SymbolIcon Info20}" x:Name="MenuApplication">
                     <MenuItem Header="Paperについて" Icon="{ui:SymbolIcon Info20}" x:Name="MenuApplication_AboutPaper" Click="MenuApplication_AboutPaper_Click" />
+                    <MenuItem Header="アイコンについて" Icon="{ui:SymbolIcon Icons20}" x:Name="MenuApplication_AboutIcon" Click="MenuApplication_AboutIcon_Click" />
                     <Separator />
                     <MenuItem Header="終了" Icon="{ui:SymbolIcon ArrowExit20}" x:Name="MenuApplication_Exit" Click="MenuApplication_Exit_Click"/>
                 </ui:MenuItem>

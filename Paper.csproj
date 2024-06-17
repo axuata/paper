@@ -8,8 +8,13 @@
     <UseWPF>true</UseWPF>
     <SignAssembly>False</SignAssembly>
     <Title>Paper</Title>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="WPF-UI" Version="3.0.4" />

@@ -40,6 +40,10 @@ namespace Paper {
       MessageBox.Show("Paper / 1.0.0 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
+    private void MenuApplication_AboutIcon_Click(object sender, RoutedEventArgs e) {
+      MessageBox.Show("https://www.flaticon.com/free-icons/send   Send icons created by Freepik - Flaticon", "アイコンについて", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
     private void MenuApplication_Exit_Click(object sender, RoutedEventArgs e) {
       Application.Current.Shutdown();
     }
