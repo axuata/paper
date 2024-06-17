@@ -18,6 +18,8 @@ namespace Paper {
   public partial class MainWindow {
     private string currentFilePath = string.Empty;
     private bool isSaved = true;
+    private Stack<string> undoStack = new Stack<string>();
+    private Stack<string> redoStack = new Stack<string>();
 
     public MainWindow() {
       InitializeComponent();
@@ -25,6 +27,10 @@ namespace Paper {
 
     private void PaperTextbox_TextChanged(object sender, TextChangedEventArgs e) {
       isSaved = false;
+      if (PaperTextbox.IsFocused) {
+        undoStack.Push(PaperTextbox.Text);
+        redoStack.Clear();
+      }
     }
 
     #region Menu
@@ -93,6 +99,42 @@ namespace Paper {
         }
       }
       return true;
+    }
+    #endregion
+
+    #region Edit
+    private void MenuEdit_Undo_Click(object sender, RoutedEventArgs e) {
+      if (undoStack.Count > 0) {
+        redoStack.Push(PaperTextbox.Text);
+        PaperTextbox.TextChanged -= PaperTextbox_TextChanged;
+        PaperTextbox.Text = undoStack.Pop();
+        PaperTextbox.TextChanged += PaperTextbox_TextChanged;
+      }
+    }
+
+    private void MenuEdit_Redo_Click(object sender, RoutedEventArgs e) {
+      if (redoStack.Count > 0) {
+        undoStack.Push(PaperTextbox.Text);
+        PaperTextbox.TextChanged -= PaperTextbox_TextChanged;
+        PaperTextbox.Text = redoStack.Pop();
+        PaperTextbox.TextChanged += PaperTextbox_TextChanged;
+      }
+    }
+
+    private void MenuEdit_Cut_Click(object sender, RoutedEventArgs e) {
+      if (PaperTextbox.SelectedText.Length > 0) {
+        PaperTextbox.Cut();
+      }
+    }
+
+    private void MenuEdit_Copy_Click(object sender, RoutedEventArgs e) {
+      if (PaperTextbox.SelectedText.Length > 0) {
+        PaperTextbox.Copy();
+      }
+    }
+
+    private void MenuEdit_Paste_Click(object sender, RoutedEventArgs e) {
+      PaperTextbox.Paste();
     }
     #endregion
 
