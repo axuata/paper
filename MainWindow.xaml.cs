@@ -21,9 +21,16 @@ namespace Paper {
     private bool isSaved = true;
     private Stack<string> undoStack = new Stack<string>();
     private Stack<string> redoStack = new Stack<string>();
+    int PaperTextboxLengthInt = 0;
 
     public MainWindow() {
       InitializeComponent();
+
+      PaperTextboxLengthInt = new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text.Length - 2;
+      if (PaperTextboxLengthInt < 0 ) {
+        PaperTextboxLengthInt = 0;
+      }
+      StatusTextLength.Text = "文字数：" + PaperTextboxLengthInt.ToString();
     }
 
     private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
@@ -36,16 +43,22 @@ namespace Paper {
     private void PaperTextbox_TextChanged(object sender, TextChangedEventArgs e) {
       isSaved = false;
       if (PaperTextbox.IsFocused) {
-        undoStack.Push(PaperTextbox.Text);
+        undoStack.Push(new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text);
         redoStack.Clear();
       }
+
+      PaperTextboxLengthInt = new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text.Length - 2;
+      if (PaperTextboxLengthInt < 0) {
+        PaperTextboxLengthInt = 0;
+      }
+      StatusTextLength.Text = "文字数：" + PaperTextboxLengthInt.ToString();
     }
 
     #region Menu
 
     #region Application
     private void MenuApplication_AboutPaper_Click(object sender, RoutedEventArgs e) {
-      MessageBox.Show("Paper / 1.0.0 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
+      MessageBox.Show("Paper / 0.6.0 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void MenuApplication_AboutIcon_Click(object sender, RoutedEventArgs e) {
@@ -67,7 +80,7 @@ namespace Paper {
         return;
       }
 
-      PaperTextbox.Clear();
+      PaperTextbox.Document.Blocks.Clear();
       currentFilePath = string.Empty;
       isSaved = true;
     }
@@ -81,7 +94,7 @@ namespace Paper {
       openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
       if (openFileDialog.ShowDialog() == true) {
         currentFilePath = openFileDialog.FileName;
-        PaperTextbox.Text = File.ReadAllText(currentFilePath);
+        new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text = File.ReadAllText(currentFilePath);
         isSaved = true;
       }
     }
@@ -90,7 +103,7 @@ namespace Paper {
       if (string.IsNullOrEmpty(currentFilePath)) {
         MenuFile_SaveAs_Click(sender, e);
       } else {
-        File.WriteAllText(currentFilePath, PaperTextbox.Text);
+        File.WriteAllText(currentFilePath, new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text);
         isSaved = true;
       }
     }
@@ -100,7 +113,7 @@ namespace Paper {
       saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
       if (saveFileDialog.ShowDialog() == true) {
         currentFilePath = saveFileDialog.FileName;
-        File.WriteAllText(currentFilePath, PaperTextbox.Text);
+        File.WriteAllText(currentFilePath, new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text);
         isSaved = true;
       }
     }
@@ -121,30 +134,30 @@ namespace Paper {
     #region Edit
     private void MenuEdit_Undo_Click(object sender, RoutedEventArgs e) {
       if (undoStack.Count > 0) {
-        redoStack.Push(PaperTextbox.Text);
+        redoStack.Push(new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text);
         PaperTextbox.TextChanged -= PaperTextbox_TextChanged;
-        PaperTextbox.Text = undoStack.Pop();
+        new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text = undoStack.Pop();
         PaperTextbox.TextChanged += PaperTextbox_TextChanged;
       }
     }
 
     private void MenuEdit_Redo_Click(object sender, RoutedEventArgs e) {
       if (redoStack.Count > 0) {
-        undoStack.Push(PaperTextbox.Text);
+        undoStack.Push(new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text);
         PaperTextbox.TextChanged -= PaperTextbox_TextChanged;
-        PaperTextbox.Text = redoStack.Pop();
+        new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text = redoStack.Pop();
         PaperTextbox.TextChanged += PaperTextbox_TextChanged;
       }
     }
 
     private void MenuEdit_Cut_Click(object sender, RoutedEventArgs e) {
-      if (PaperTextbox.SelectedText.Length > 0) {
+      if (PaperTextbox.Selection.Text.Length > 0) {
         PaperTextbox.Cut();
       }
     }
 
     private void MenuEdit_Copy_Click(object sender, RoutedEventArgs e) {
-      if (PaperTextbox.SelectedText.Length > 0) {
+      if (PaperTextbox.Selection.Text.Length > 0) {
         PaperTextbox.Copy();
       }
     }
@@ -154,17 +167,24 @@ namespace Paper {
     }
 
     private void MenuEdit_Font_Click(object sender, RoutedEventArgs e) {
-      var FontSelectionDialog = new FontSelectionDialog(PaperTextbox);
+      var fontSelectionDialog = new FontSelectionDialog(PaperTextbox);
 
-      if (FontSelectionDialog.ShowDialog() == true) {
-        var selectedFontFamily = FontSelectionDialog.SelectedFontFamily;
-        var selectedFontSize = FontSelectionDialog.SelectedFontSize;
-        var selectedFontWeight = FontSelectionDialog.SelectedFontWeight;
+      // FontSelectionDialog のインスタンスを使って ShowDialog() を呼び出す
+      bool? result = fontSelectionDialog.ShowDialog();
+
+      if (result == true) {
+        // 選択されたフォント情報を取得
+        var selectedFontFamily = fontSelectionDialog.SelectedFontFamily;
+        var selectedFontSize = fontSelectionDialog.SelectedFontSize;
+        var selectedFontWeight = fontSelectionDialog.SelectedFontWeight;
+
+        // PaperTextbox に選択されたフォントを適用する
         PaperTextbox.FontFamily = selectedFontFamily;
         PaperTextbox.FontSize = selectedFontSize;
         PaperTextbox.FontWeight = selectedFontWeight;
       }
     }
+
     #endregion
 
     #endregion

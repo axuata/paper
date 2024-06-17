@@ -13,7 +13,7 @@ namespace Paper.dialogs {
   /// FontSelectionDialog.xaml の相互作用ロジック
   /// </summary>
   public partial class FontSelectionDialog {
-    private TextBox _targetTextBox;
+    private RichTextBox _targetTextBox;
 
     public List<FontFamily> FontFamilies {
       get; private set;
@@ -31,7 +31,7 @@ namespace Paper.dialogs {
       get; set;
     }
 
-    public FontSelectionDialog(TextBox targetTextBox) {
+    public FontSelectionDialog(RichTextBox targetTextBox) {
       InitializeComponent();
       _targetTextBox = targetTextBox;
 
