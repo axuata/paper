@@ -44,15 +44,19 @@
                     <MenuItem Header="保存" Icon="{ui:SymbolIcon Save20}" x:Name="MenuFile_Save" Click="MenuFile_Save_Click" />
                     <MenuItem Header="名前を付けて保存" Icon="{ui:SymbolIcon SaveEdit20}" x:Name="MenuFile_SaveAs" Click="MenuFile_SaveAs_Click" />
                 </ui:MenuItem>
-                <ui:MenuItem Header="編集" Icon="{ui:SymbolIcon DocumentEdit20}">
+                <ui:MenuItem Header="編集" Icon="{ui:SymbolIcon DocumentEdit20}" x:Name="MenuEdit">
                     <MenuItem Header="元に戻す" Icon="{ui:SymbolIcon ArrowUndo20}" x:Name="MenuEdit_Undo" Click="MenuEdit_Undo_Click" />
                     <MenuItem Header="やり直す" Icon="{ui:SymbolIcon ArrowRedo20}" x:Name="MenuEdit_Redo" Click="MenuEdit_Redo_Click" />
                     <Separator />
                     <MenuItem Header="切り取り" Icon="{ui:SymbolIcon Cut20}" x:Name="MenuEdit_Cut" Click="MenuEdit_Cut_Click" />
-                    <MenuItem Header="コピー" Icon="{ui:SymbolIcon Copy20}" x:Name="MenuEdit_Copy" Click="MenuEdit_Copy_Click"/>
+                    <MenuItem Header="コピー" Icon="{ui:SymbolIcon Copy20}" x:Name="MenuEdit_Copy" Click="MenuEdit_Copy_Click" />
                     <MenuItem Header="貼り付け" Icon="{ui:SymbolIcon ClipBoardPaste20}" x:Name="MenuEdit_Paste" Click="MenuEdit_Paste_Click" />
                     <Separator />
                     <MenuItem Header="フォント変更" Icon="{ui:SymbolIcon TextFont20}" x:Name="MenuEdit_Font" Click="MenuEdit_Font_Click" />
+                </ui:MenuItem>
+                <ui:MenuItem Header="入力" Icon="{ui:SymbolIcon AddCircle20}" x:Name="MenuInput">
+                    <MenuItem Header="日付" Icon="{ui:SymbolIcon CalendarDay20}" x:Name="MenuInputDay" Click="MenuInputDay_Click" />
+                    <MenuItem Header="時刻" Icon="{ui:SymbolIcon AccessTime20}" x:Name="MenuInputTime" Click="MenuInputTime_Click" />
                 </ui:MenuItem>
                 <Separator />
             </Menu>

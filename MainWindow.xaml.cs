@@ -191,6 +191,24 @@ namespace Paper {
 
     #endregion
 
+    #region Input
+    private void MenuInputDay_Click(object sender, RoutedEventArgs e) {
+      // 現在の日付を取得
+      string currentDate = DateTime.Now.ToString("yyyy/MM/dd");
+
+      // 現在の日付を RichTextBox のカーソル位置に挿入
+      PaperTextbox.CaretPosition.InsertTextInRun(currentDate);
+    }
+
+    private void MenuInputTime_Click(object sender, RoutedEventArgs e) {
+      // 現在の時刻を取得
+      string currentTime = DateTime.Now.ToString("HH:mm:ss");
+
+      // 現在の時刻を RichTextBox のカーソル位置に挿入
+      PaperTextbox.CaretPosition.InsertTextInRun(currentTime);
+    }
+    #endregion
+
     #endregion
   }
 }
