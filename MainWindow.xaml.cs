@@ -26,11 +26,7 @@ namespace Paper {
     public MainWindow() {
       InitializeComponent();
 
-      PaperTextboxLengthInt = new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text.Length - 2;
-      if (PaperTextboxLengthInt < 0 ) {
-        PaperTextboxLengthInt = 0;
-      }
-      StatusTextLength.Text = "文字数：" + PaperTextboxLengthInt.ToString();
+      UpdateStatusTextLength();
     }
 
     private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
@@ -47,18 +43,26 @@ namespace Paper {
         redoStack.Clear();
       }
 
-      PaperTextboxLengthInt = new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text.Length - 2;
-      if (PaperTextboxLengthInt < 0) {
-        PaperTextboxLengthInt = 0;
+      UpdateStatusTextLength();
+    }
+
+    private void UpdateStatusTextLength() {
+      string text = new TextRange(PaperTextbox.Document.ContentStart, PaperTextbox.Document.ContentEnd).Text;
+      string textWithoutNewLines = text.Replace("\r\n", "").Replace("\n", "");
+      int textLength = textWithoutNewLines.Length;
+
+      if (textLength < 0) {
+        textLength = 0;
       }
-      StatusTextLength.Text = "文字数：" + PaperTextboxLengthInt.ToString();
+
+      StatusTextLength.Text = "文字数：" + textLength.ToString();
     }
 
     #region Menu
 
     #region Application
     private void MenuApplication_AboutPaper_Click(object sender, RoutedEventArgs e) {
-      MessageBox.Show("Paper / 0.6.0 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
+      MessageBox.Show("Paper / 0.6.1 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void MenuApplication_AboutIcon_Click(object sender, RoutedEventArgs e) {
