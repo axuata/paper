@@ -62,7 +62,7 @@ namespace Paper {
 
     #region Application
     private void MenuApplication_AboutPaper_Click(object sender, RoutedEventArgs e) {
-      MessageBox.Show("Paper / 0.6.1 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
+      MessageBox.Show("Paper / 0.7.1 | © 2024 Axuata, CC BY 4.0\r\n", "Paperについて", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void MenuApplication_AboutIcon_Click(object sender, RoutedEventArgs e) {
@@ -173,16 +173,13 @@ namespace Paper {
     private void MenuEdit_Font_Click(object sender, RoutedEventArgs e) {
       var fontSelectionDialog = new FontSelectionDialog(PaperTextbox);
 
-      // FontSelectionDialog のインスタンスを使って ShowDialog() を呼び出す
       bool? result = fontSelectionDialog.ShowDialog();
 
       if (result == true) {
-        // 選択されたフォント情報を取得
         var selectedFontFamily = fontSelectionDialog.SelectedFontFamily;
         var selectedFontSize = fontSelectionDialog.SelectedFontSize;
         var selectedFontWeight = fontSelectionDialog.SelectedFontWeight;
 
-        // PaperTextbox に選択されたフォントを適用する
         PaperTextbox.FontFamily = selectedFontFamily;
         PaperTextbox.FontSize = selectedFontSize;
         PaperTextbox.FontWeight = selectedFontWeight;
@@ -193,18 +190,14 @@ namespace Paper {
 
     #region Input
     private void MenuInputDay_Click(object sender, RoutedEventArgs e) {
-      // 現在の日付を取得
       string currentDate = DateTime.Now.ToString("yyyy/MM/dd");
 
-      // 現在の日付を RichTextBox のカーソル位置に挿入
       PaperTextbox.CaretPosition.InsertTextInRun(currentDate);
     }
 
     private void MenuInputTime_Click(object sender, RoutedEventArgs e) {
-      // 現在の時刻を取得
       string currentTime = DateTime.Now.ToString("HH:mm:ss");
 
-      // 現在の時刻を RichTextBox のカーソル位置に挿入
       PaperTextbox.CaretPosition.InsertTextInRun(currentTime);
     }
     #endregion
